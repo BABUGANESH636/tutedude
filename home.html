@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BulkBuddy</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: #f3f4f6;
+    }
+    h1 {
+      margin-bottom: 1rem;
+    }
+    .button {
+      padding: 1rem 2rem;
+      margin: 0.5rem;
+      font-size: 1rem;
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .button:hover {
+      background-color: #1e40af;
+    }
+  </style>
+</head>
+<body>
+  <h1>BulkBuddy</h1>
+  <button class="button" onclick="location.href='create.html'">Create Group</button>
+  <button class="button" onclick="location.href='join.html'">Join Group</button>
+  <button class="button" onclick="location.href='view.html'">View Groups</button>
+  <button class="button" onclick="alert('Location feature coming soon!')">📍 Detect Current Location</button>
+</body>
+</html>

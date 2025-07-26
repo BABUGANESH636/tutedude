@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Group | BulkBuddy</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f9fafb;
+      padding: 2rem;
+    }
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input, select, button {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      border-radius: 0.5rem;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+    button {
+      background: #3b82f6;
+      color: white;
+      cursor: pointer;
+      border: none;
+    }
+    button:hover {
+      background: #2563eb;
+    }
+    .success-msg {
+      background: #d1fae5;
+      color: #065f46;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Create a Bulk Group</h2>
+    <form id="groupForm">
+      <input type="text" id="product" placeholder="Product Name (e.g., Onion)" required />
+      <input type="text" id="name" placeholder="Your Name" required />
+      <input type="tel" id="mobile" placeholder="Mobile Number" required />
+
+      <select id="role" required>
+        <option value="">Select Your Role</option>
+        <option value="vendor">Vendor</option>
+        <option value="supplier">Supplier</option>
+      </select>
+
+      <input type="text" id="location" placeholder="Fetching your location..." required readonly />
+      <input type="number" id="duration" placeholder="Group Closes In (Minutes)" required />
+
+      <button type="submit">Create Group</button>
+    </form>
+    <div id="result" class="success-msg" style="display:none;"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById('groupForm');
+    const result = document.getElementById('result');
+    const locationInput = document.getElementById('location');
+
+    // Auto-fetch user location
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          const { latitude, longitude } = position.coords;
+          fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`)
+            .then(response => response.json())
+            .then(data => {
+              locationInput.value = data.display_name || `${latitude}, ${longitude}`;
+            })
+            .catch(() => {
+              locationInput.value = `${latitude}, ${longitude}`;
+            });
+        },
+        error => {
+          locationInput.placeholder = "Couldn't fetch location. Enter manually.";
+          locationInput.readOnly = false;
+        }
+      );
+    } else {
+      locationInput.placeholder = "Geolocation not supported. Enter manually.";
+      locationInput.readOnly = false;
+    }
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const product = document.getElementById('product').value;
+      const name = document.getElementById('name').value;
+      const mobile = document.getElementById('mobile').value;
+      const role = document.getElementById('role').value;
+      const location = document.getElementById('location').value;
+      const duration = document.getElementById('duration').value;
+
+      const groupId = `${product}-${location}`.toLowerCase().replace(/\s+/g, '-');
+
+      result.style.display = 'block';
+      result.innerHTML = `✅ Group <strong>${product}</strong> created successfully!<br><br>
+        Share a <strong>WhatsApp group link</strong> with other vendors to start collaborating.<br><br>
+        <strong>Suggested Group ID:</strong> ${groupId}`;
+
+      form.reset();
+    });
+  </script>
+</body>
+</html>
