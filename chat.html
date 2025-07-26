@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Group Chat</title>
+</head>
+<body>
+  <h1>Group Chat</h1>
+  <h3 id="groupLabel"></h3>
+  <ul id="messages"></ul>
+  <form id="chatForm">
+    <input type="text" id="message" placeholder="Enter message" required />
+    <button type="submit">Send</button>
+  </form>
+
+  <script>
+    const groupName = localStorage.getItem('groupName');
+    document.getElementById('groupLabel').textContent = 'Group: ' + groupName;
+
+    document.getElementById('chatForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const msg = document.getElementById('message').value;
+      const li = document.createElement('li');
+      li.textContent = msg;
+      document.getElementById('messages').appendChild(li);
+      document.getElementById('message').value = '';
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Join Group</title>
+</head>
+<body>
+  <h1>Join Group</h1>
+  <form id="joinForm">
+    <input type="text" id="groupName" placeholder="Enter group name" required />
+    <button type="submit">Join</button>
+  </form>
+  <p id="responseMsg"></p>
+
+  <script>
+    document.getElementById('joinForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const groupName = document.getElementById('groupName').value;
+
+      const res = await fetch('/join-group', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ groupName })
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        localStorage.setItem('groupName', groupName);
+        window.location.href = '/chat.html';
+      } else {
+        document.getElementById('responseMsg').textContent = data.message;
+      }
+    });
+  </script>
+</body>
+</html>
